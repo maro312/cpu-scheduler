@@ -17,6 +17,7 @@ public class Priority_Scheduling {
         out.add(arr.get(0));
         arr.remove(arr.get(0));
         op++;
+        int i = 0;
         while (!arr.isEmpty()){
             if (op == 3){
                 arr.get(arr.size()-1).priority += op;
@@ -24,12 +25,22 @@ public class Priority_Scheduling {
                 op = 0;
                 continue;
             }
-            arr.get(0).waiting_time = cur_time;
-            arr.get(0).turnaround_time = cur_time + arr.get(0).burst_time;
-            cur_time = arr.get(0).turnaround_time;
-            op++;
-            out.add(arr.get(0));
-            arr.remove(arr.get(0));
+            if (arr.get(i).arrive_time <= cur_time){
+                if (i == arr.size()){
+                    i = 0;
+                }
+                arr.get(i).waiting_time = cur_time;
+                arr.get(i).turnaround_time = cur_time + arr.get(0).burst_time;
+                cur_time = arr.get(i).turnaround_time;
+                op++;
+                out.add(arr.get(i));
+                arr.remove(arr.get(i));
+                i++;
+            }
+            else{
+                i++;
+            }
         }
+
     }
 }
