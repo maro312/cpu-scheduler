@@ -13,6 +13,8 @@ public class Main {
         // get the context switch
 
         SJF sjf = new SJF();
+        AGRR agrr = new AGRR();
+
         for (int i = 0; i < processNum; i++) {
             String processName;
             int burstTime,priority,arrivalTime;
@@ -33,8 +35,11 @@ public class Main {
 
 
             sjf.arr.add(process);
+            agrr.processes.add(process);
         }
-        sjf.execute();
+        //sjf.execute();
+
+        agrr.execute();
 
 
 

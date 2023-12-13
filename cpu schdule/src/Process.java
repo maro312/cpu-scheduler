@@ -1,9 +1,13 @@
+import static java.lang.StrictMath.ceil;
+
+
 public class Process {
     String name;
     int arrive_time;
 
     int burst_time;
 
+    int AGFactor;
     int priority;
     int quantum;
     int id;
@@ -14,7 +18,7 @@ public class Process {
         this.arrive_time = arrive;
         this.burst_time = burst;
         this.priority = priorityNumber;
-        this.quantum = quantum;
+        this.quantum  = (int) (ceil ( (double) quantum / 2));
         this.id = id;
         this.start = -1;
         this.end = -1;
@@ -61,4 +65,21 @@ public class Process {
     public void setBurst_time(int burst_time) {
         this.burst_time = burst_time;
     }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
+
+    public int getAGFactor() {
+        return AGFactor;
+    }
+
+    public void setAGFactor(int AGFactor) {
+        this.AGFactor = AGFactor;
+    }
+
 }
