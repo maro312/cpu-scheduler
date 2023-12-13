@@ -1,27 +1,28 @@
-import static java.lang.StrictMath.ceil;
-
-
 public class Process {
     String name;
     int arrive_time;
 
     int burst_time;
 
-    int AGFactor;
     int priority;
+
     int quantum;
     int id;
     int start;
     int end;
+    int waiting_time;
+    int turnaround_time;
     Process(String name, int arrive, int burst, int priorityNumber, int quantum, int id) {
         this.name = name;
         this.arrive_time = arrive;
         this.burst_time = burst;
         this.priority = priorityNumber;
-        this.quantum  = (int) (ceil ( (double) quantum / 2));
+        this.quantum = quantum;
         this.id = id;
         this.start = -1;
         this.end = -1;
+        this.waiting_time = -1;
+        this.turnaround_time = -1;
     }
     Process(int burst) {
 
@@ -35,7 +36,6 @@ public class Process {
         this.start = -1;
         this.end = -1;
     }
-
 
 
      String getName() {
@@ -73,13 +73,4 @@ public class Process {
     public void setPriority(int priority) {
         this.priority = priority;
     }
-
-    public int getAGFactor() {
-        return AGFactor;
-    }
-
-    public void setAGFactor(int AGFactor) {
-        this.AGFactor = AGFactor;
-    }
-
 }
