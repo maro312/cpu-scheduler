@@ -1,10 +1,7 @@
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.Random;
+import java.util.*;
 
 public class AGRR {
-    ArrayList<Process> Processes = new ArrayList<>();
+    ArrayList<Process> current = new ArrayList<>();
     ArrayList<Process> readyQueue = new ArrayList<>();
     ArrayList<Process> ArrivalProcess = new ArrayList<>();
     ArrayList<Process> dieList = new ArrayList<>();
@@ -21,26 +18,26 @@ public class AGRR {
 
     int currTime = 0;
 
-//    public void CalcAG() {
-//        for (Process p : Processes) {
-//            Random random = new Random();
-//            int rand = random.nextInt(21);
-//
-//            if (rand < 10) {
-//                p.setAGFactor(rand + p.get_arrival_time() + p.getBurst_time());
-//            } else if (rand > 10) {
-//                p.setAGFactor(10 + p.get_arrival_time() + p.getBurst_time());
-//            } else {
-//                p.setAGFactor(p.getPriority() + p.get_arrival_time() + p.getBurst_time());
-//            }
-//        }
-//    }
+    public void CalcAG() {
+        for (Process p : current) {
+            Random random = new Random();
+            int rand = random.nextInt(21);
+
+            if (rand < 10) {
+                p.setAGFactor(rand + p.get_arrival_time() + p.getBurst_time());
+            } else if (rand > 10) {
+                p.setAGFactor(10 + p.get_arrival_time() + p.getBurst_time());
+            } else {
+                p.setAGFactor(p.getPriority() + p.get_arrival_time() + p.getBurst_time());
+            }
+        }
+    }
 
     public double calculateMeanQuantumTime() {
         double sum = 0;
         int count = 0;
 
-        for (Process p : Processes) {
+        for (Process p : current) {
             if (p.get_arrival_time() <= currTime && p.getBurst_time() > 0) {
                 sum += p.getQuantum();
                 count++;
@@ -51,25 +48,25 @@ public class AGRR {
     }
 
     public void execute() {
-       // CalcAG();
+       CalcAG();
         ArrivalProcess.sort(Comparator.comparingInt(Process::get_arrival_time));
 
-        while (!Processes.isEmpty() || !ArrivalProcess.isEmpty() || !readyQueue.isEmpty()) {
+        while (!current.isEmpty() || !ArrivalProcess.isEmpty() || !readyQueue.isEmpty()) {
             // Simulate arriving processes
             Iterator<Process> iterator = ArrivalProcess.iterator();
             while (iterator.hasNext()) {
                 Process p = iterator.next();
                 if (p.get_arrival_time() <= currTime) {
-                    Processes.add(p);
+                    current.add(p);
                     iterator.remove();
                 }
             }
             // sort based on AG factor then arrival time to handle equal AG factors
             Comparator<Process> comparator = Comparator.comparing(Process::getAGFactor).thenComparingInt(Process::get_arrival_time);
-            Processes.sort(comparator);
+            current.sort(comparator);
 
-            if (!Processes.isEmpty()) {
-                Process currProcess = Processes.getFirst();
+            if (!current.isEmpty()) {
+                Process currProcess = current.getFirst();
 
                 // Non-preemptive execution for half the quantum time
 
@@ -85,15 +82,24 @@ public class AGRR {
                     while (iterator.hasNext()) {
                         Process p = iterator.next();
                         if (p.get_arrival_time() <= currTime) {
-                            Processes.add(p);
+                            current.add(p);
                             iterator.remove();
                         }
                     }
-                    //sort the queue again
-                    Processes.sort(comparator);
 
-                    // Get the first process in execution
-                    Process newProcess = Processes.getFirst();
+                    //sort the queue again
+                    current.sort(comparator);
+                    Process newProcess;
+
+                    if(current.isEmpty()|| current.getFirst().getAGFactor() > currProcess.getAGFactor()){
+                        //if no new Processes have arrived or the process that arrived has a bigger AG factor
+                        //get the first in ready queue
+                        newProcess = readyQueue.getFirst();
+                    }
+                    else {
+                        // Get the first process in execution
+                        newProcess = current.getFirst();
+                    }
 
                     // Check if new processes have appeared
                     if (newProcess.getAGFactor() < currProcess.getAGFactor()) {
@@ -103,7 +109,12 @@ public class AGRR {
 
                         readyQueue.add(currProcess);
 
-                        currProcess = Processes.remove(0);
+                        if(current.isEmpty()){
+                            currProcess = readyQueue.removeFirst();
+                        }
+                        else{
+                            currProcess = current.removeFirst();
+                        }
 
                         int nonPre = (int) Math.ceil((double) currProcess.getQuantum() / 2);
                         currProcess.setBurst_time(currProcess.getBurst_time() - nonPre);
@@ -112,7 +123,8 @@ public class AGRR {
                         currTime += nonPre;
 
                         break;
-                    } else {
+                    }
+                    else {
                         // execute for one second
                         currProcess.setRemainingQuantum(currProcess.getRemainingQuantum() - 1);
                         currProcess.setBurst_time(currProcess.getBurst_time() - 1);
@@ -128,8 +140,15 @@ public class AGRR {
                         // Add old process to ready queue
                         readyQueue.add(currProcess);
 
-                        // Move to work on the new process
-                        currProcess = Processes.remove(0);
+                        if(current.isEmpty() || current.getFirst().getAGFactor() > currProcess.getAGFactor()){
+                            currProcess = readyQueue.removeFirst();
+                        }
+
+                        else {
+                            // Move to work on the new process
+                            currProcess = current.removeFirst();
+                        }
+
                     }
 
                     // Check if process finished its execution (burst time is DONE)
@@ -142,7 +161,15 @@ public class AGRR {
                         currProcess.setEnd(currTime);
 
                         // Move to work on the new process
-                        currProcess = Processes.remove(0);
+                        if(current.isEmpty() || current.getFirst().getAGFactor() > currProcess.getAGFactor()){
+                            currProcess = readyQueue.removeFirst();
+                        }
+
+                        else {
+                            // Move to work on the new process
+                            currProcess = current.removeFirst();
+                        }
+
                     }
                 }
             } else {
