@@ -117,9 +117,9 @@ public class SJF {
             }
         }*/
 
-        for ( i = 0; i < out.size(); i++) {
-            System.out.print("Waiting time: ");
-            System.out.println(out.get(i).waiting_time);
+        for (Process p: out) {
+            System.out.println(p.getName() + "waiting time = "+ p.getWaiting_time());
+
         }
 
 

@@ -16,17 +16,11 @@ public class SRTF {
         return averageWaiting;
     }
 
-    public void setAverageWaiting(double averageWaiting) {
-        this.averageWaiting = averageWaiting;
-    }
 
     public double getAverageTurnAround() {
         return averageTurnAround;
     }
 
-    public void setAverageTurnAround(double averageTurnAround) {
-        this.averageTurnAround = averageTurnAround;
-    }
 
     public void execute() {
         int currTime = 0;

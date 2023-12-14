@@ -5,6 +5,8 @@ public class Process {
     int remainingBurst;
     int priority;
     int quantum;
+
+    int remainingQuantum;
     int AGFactor;
     int id;
     int start;
@@ -124,5 +126,13 @@ public class Process {
 
     public void setRemainingBurst(int remainingBurst) {
         this.remainingBurst = remainingBurst;
+    }
+
+    public int getRemainingQuantum() {
+        return remainingQuantum;
+    }
+
+    public void setRemainingQuantum(int remainingQuantum) {
+        this.remainingQuantum = remainingQuantum;
     }
 }
