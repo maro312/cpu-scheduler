@@ -22,8 +22,8 @@ public class Main {
         for (int i = 0; i < processNum; i++) {
             String processName;
             int burstTime,priority,arrivalTime;
-            System.out.println("Please enter the process name ");
-            processName = scanner.nextLine();
+            //System.out.println("Please enter the process name ");
+            //processName = scanner.nextLine();
 
             System.out.println("Please enter the Arrival time of the process");
             arrivalTime = sc.nextInt();
@@ -34,14 +34,14 @@ public class Main {
             System.out.println("Priority Number");
             priority = sc.nextInt();
 
-            Process process = new Process(processName,arrivalTime,burstTime,priority,1,i);
+            Process process = new Process("processName",arrivalTime,burstTime,priority,1,i);
             //sjf.pq.add(process);
 
 
             //sjf.arr.add(process);
-            //p.arr.add(process);
+            p.arr.add(process);
             //agrr.ArrivalProcess.add(process);
-            srtf.arrivalProcesses.add(process);
+            //srtf.arrivalProcesses.add(process);
         }
 
         srtf.execute();

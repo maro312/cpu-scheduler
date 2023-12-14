@@ -47,9 +47,9 @@ public class SJF {
             if (arr.get(i).id == minID){
                 arr.get(i).end = arr.get(i).arrive_time + arr.get(i).burst_time;
                 curr_time = arr.get(i).end;
-                arr.get(i).waiting_time = arr.get(i).arrive_time;
+                arr.get(i).waiting_time = 0; // first process is runs always at second 0
                 //arr.get(i).arrive_time = curr_time;
-                arr.get(i).turnaround_time = curr_time;
+                arr.get(i).turnaround_time = arr.get(i).burst_time;
                 out.add(arr.get(i));
                 arr.remove(arr.get(i));
                 break;
@@ -66,7 +66,7 @@ public class SJF {
                   //  i = 0;
                     //ck = false;
                 //}
-                arr.get(i).waiting_time = curr_time;
+                arr.get(i).waiting_time = curr_time - arr.get(i).arrive_time;
                 curr_time += arr.get(i).burst_time;
                 arr.get(i).turnaround_time = curr_time - arr.get(i).arrive_time;
                 out.add(arr.get(i));
@@ -79,9 +79,9 @@ public class SJF {
             else if (i == arr.size()-1 && arr.get(i).arrive_time > curr_time){
                 i = 0;
                 curr_time = by_arrive.get(0).arrive_time;
-                by_arrive.get(i).waiting_time = curr_time;
+                by_arrive.get(i).waiting_time = curr_time - arr.get(i).arrive_time; // from arrival to beginning  of process
                 curr_time += by_arrive.get(i).burst_time;
-                by_arrive.get(i).turnaround_time = curr_time;
+                by_arrive.get(i).turnaround_time = curr_time - arr.get(i).arrive_time; // from arrival to end of process
                 out.add(by_arrive.get(i));
                 by_arrive.remove(by_arrive.get(i));
                 arr = new ArrayList<>(by_arrive);
