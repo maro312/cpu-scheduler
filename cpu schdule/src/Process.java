@@ -1,12 +1,11 @@
 public class Process {
     String name;
     int arrive_time;
-
     int burst_time;
-
+    int remainingBurst;
     int priority;
-
     int quantum;
+    int AGFactor;
     int id;
     int start;
     int end;
@@ -16,6 +15,7 @@ public class Process {
         this.name = name;
         this.arrive_time = arrive;
         this.burst_time = burst;
+        this.remainingBurst = burst;
         this.priority = priorityNumber;
         this.quantum = quantum;
         this.id = id;
@@ -72,5 +72,57 @@ public class Process {
 
     public void setPriority(int priority) {
         this.priority = priority;
+    }
+
+    public int getAGFactor() {
+        return AGFactor;
+    }
+
+    public void setAGFactor(int AGFActor) {
+        this.AGFactor = AGFActor;
+    }
+
+    public void decreaseBurst(){
+        this.burst_time --;
+    }
+
+    public int getWaiting_time() {
+        return waiting_time;
+    }
+
+    public void setWaiting_time(int waiting_time) {
+        this.waiting_time = waiting_time;
+    }
+
+    public int getStart() {
+        return start;
+    }
+
+    public void setStart(int start) {
+        this.start = start;
+    }
+
+    public int getEnd() {
+        return end;
+    }
+
+    public void setEnd(int end) {
+        this.end = end;
+    }
+
+    public int getTurnaround_time() {
+        return turnaround_time;
+    }
+
+    public void setTurnaround_time(int turnaround_time) {
+        this.turnaround_time = turnaround_time;
+    }
+
+    public int getRemainingBurst() {
+        return remainingBurst;
+    }
+
+    public void setRemainingBurst(int remainingBurst) {
+        this.remainingBurst = remainingBurst;
     }
 }
