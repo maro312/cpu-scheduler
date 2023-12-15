@@ -8,7 +8,7 @@ public class Main {
         System.out.println("# of processes");
         processNum = sc.nextInt();
         System.out.println("Please enter the Round Robin Time Quantum");
-         RRQ = sc.nextInt();
+         RRQ = 4 ;
         //System.out.println("Please enter the context switching");
         // get the context switch
 
@@ -21,22 +21,24 @@ public class Main {
 
         for (int i = 0; i < processNum; i++) {
             String processName;
-            int burstTime,priority,arrivalTime;
+            int burstTime,priority = 0,arrivalTime;
             System.out.println("Please enter the process name ");
             processName = scanner.nextLine();
 
-            System.out.println("Please enter the Arrival time of the process");
+           System.out.println("Please enter the Arrival time of the process");
             arrivalTime = sc.nextInt();
 
-            System.out.println("Burst time");
+           System.out.println("Burst time");
             burstTime = sc.nextInt();
+           // priority = sc.nextInt() ;
 
 
             System.out.println("AGFactor");
             int AGFActor = sc.nextInt();;
 
+
             //Process process = new Process(processName,arrivalTime,burstTime,priority,1,i);
-            Process process = new Process(processName,arrivalTime,burstTime,1,RRQ,i);
+            Process process = new Process(processName,arrivalTime,burstTime,priority,RRQ,i);
             process.setAGFactor(AGFActor);
             //sjf.pq.add(process);
 
@@ -44,6 +46,7 @@ public class Main {
             //sjf.arr.add(process);
             //p.arr.add(process);
             agrr.ArrivalProcess.add(process);
+            agrr.allProcesses.add(process) ;
             //srtf.arrivalProcesses.add(process);
         }
 

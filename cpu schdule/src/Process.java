@@ -20,6 +20,7 @@ public class Process {
         this.remainingBurst = burst;
         this.priority = priorityNumber;
         this.quantum = quantum;
+        this.remainingQuantum = quantum;
         this.id = id;
         this.start = -1;
         this.end = -1;
