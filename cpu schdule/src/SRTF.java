@@ -28,7 +28,7 @@ public class SRTF {
         arrivalProcesses.sort(Comparator.comparingInt(Process::get_arrival_time));
 
         while (!arrivalProcesses.isEmpty() || !readyQueue.isEmpty()) {
-
+            //simulate the arrival of Processes
             Iterator<Process> iterator = arrivalProcesses.iterator();
             while (iterator.hasNext()) {
                 Process p = iterator.next();
@@ -43,12 +43,14 @@ public class SRTF {
                 continue;
             }
 
-
+            //sort on burst time
             Comparator<Process> comparator = Comparator.comparing(Process::getRemainingBurst).thenComparingInt(Process::get_arrival_time);
             readyQueue.sort(comparator);
 
             Process currProcess = readyQueue.getFirst();
 
+            //my algorithm to solve starvation
+            //if Process gets a priority of zero make it execute for 10% of it's burst
             for (Process p: readyQueue) {
                 if(p != currProcess) {
                     if (p.getPriority() == 0) {
@@ -60,14 +62,15 @@ public class SRTF {
                 }
             }
 
-
+            //if the current Process still didn't finish
             if(currProcess.getRemainingBurst() > 0) {
-
+                //execute it
                 currProcess.setRemainingBurst(currProcess.getRemainingBurst() - 1);
                 currTime++;
 
+                //if the Process finished the execution
                 if(currProcess.getRemainingBurst()== 0){
-
+                    //calc the End, Waiting and Turn around Time
                     currProcess.setEnd(currTime);
                     currProcess.setTurnaround_time(currTime - currProcess.get_arrival_time());
                     currProcess.setWaiting_time(currTime - currProcess.get_arrival_time()- currProcess.getBurst_time());
@@ -84,12 +87,15 @@ public class SRTF {
 
 
         for (Process p: dieList) {
-            System.out.println(p.getName() + "waiting time = "+ p.getWaiting_time());
+            System.out.println(p.getName() +" waiting Time "+ p.getWaiting_time());
+            System.out.println(p.getName() +" Turn Around "+ p.getTurnaround_time());
             averageWaiting += p.getWaiting_time();
             averageTurnAround+=p.getTurnaround_time();
         }
         averageWaiting /= dieList.size();
         averageTurnAround /= dieList.size();
+        System.out.println("average Waiting Time = " + averageWaiting);
+        System.out.println("average Turn Around Time=  " +averageTurnAround);
 
 
     }

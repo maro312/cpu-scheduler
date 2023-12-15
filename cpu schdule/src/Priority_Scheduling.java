@@ -7,6 +7,17 @@ import java.io.*;
 public class Priority_Scheduling {
     ArrayList<Process> arr = new ArrayList<>();
     ArrayList<Process> out = new ArrayList<>();
+
+    double averageWaiting,averageTurnAround;
+
+    public double getAverageWaiting() {
+        return averageWaiting;
+    }
+
+    public double getAverageTurnAround() {
+        return averageTurnAround;
+    }
+
     void execute(){
         arr.sort(Comparator.comparingInt(Process::getPriority));
         int cur_time = 0;
@@ -41,6 +52,18 @@ public class Priority_Scheduling {
                 i++;
             }
         }
+
+
+        for (Process p: out) {
+            System.out.println(p.getName() +" waiting Time "+ p.getWaiting_time());
+            System.out.println(p.getName() +" Turn Around "+ p.getTurnaround_time());
+            averageWaiting += p.getWaiting_time();
+            averageTurnAround+=p.getTurnaround_time();
+        }
+        averageWaiting /= out.size();
+        averageTurnAround /= out.size();
+        System.out.println("average Waiting Time = " + averageWaiting);
+        System.out.println("average Turn Around Time=  " +averageTurnAround);
 
     }
 }
